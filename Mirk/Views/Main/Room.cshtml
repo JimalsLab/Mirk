@@ -1,0 +1,30 @@
+﻿@model Mirk.ViewModels.MainViewModel
+
+
+<div class="box">
+    <div class="main_header">
+@if (Model.friend.Pseudo == @Model.UsersList.Where(u => u.Id == Model.friend.IdFriend).FirstOrDefault().Username)
+{
+    <h1 class="text-title-green"><b>@Model.friend.Pseudo</b></h1>
+}
+else
+{
+    <p class="title_margin_top"><b class="text-title-green title_username">@Model.friend.Pseudo</b> (@Model.UsersList.Where(u => u.Id == Model.friend.IdFriend).FirstOrDefault().Username)</p>
+}
+        
+    </div>
+    <div class="main_container default_container full_col">
+        <input type="button" class="btn invis_2" value="Change nickname" id="change_nickname"/>
+        @Html.ActionLink("View Profile", "ViewOptions", new { id = @Model.friend.IdFriend }, new { @class = "btn invis_2" })
+        @Html.ActionLink("Start Video Call", "Chat", new { id = Model.friend.IdFriend, IdGroup = Model.group.Id }, new { @class = "btn btn-primary btn_purple call_button" })
+    </div>
+    <div class="main_dialog default_container full_col " id="Conversation">
+        <div id="dropZone">Drop files here</div>
+    </div>
+    <div class="rowbox main_input">
+        @Html.TextArea("text", null, new { @class = "form-control msg_input row_text main_container", @id = "mainimputbox" })
+        <input type="button" class="btn btn-primary row_button" value="Send" id="sendMessage"/>
+    </div>
+   
+</div>
+

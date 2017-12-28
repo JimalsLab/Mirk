@@ -1,0 +1,70 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Mirk</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    
+
+</head>
+<body class="main_background">
+    <img src="~/Ressources/img/mainbg_city2.png" class="mainbg_city"/>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="menu">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <img class="logospace hover img-rounded img_logo grayscale" src="~/Ressources/img/logo_imgonly_green_verysmall.png" onclick="location.href='@Url.Action("Index", "Home")'" type="button"/>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("HOME", "Index", "Main")</li>
+                    <li>@Html.ActionLink("NEW ROOM", "CreateRoom", "Main")</li>
+                    <li>@Html.ActionLink("FRIENDS", "Friends", "Main")</li>
+                    <li>
+                        <div class="setright">
+                            @{
+                                if (Model.currUser.Options_CurrentState == 1)
+                                {
+                                    <input type="button" class="btn btn_dispo orange" />
+                                }
+                                else if (Model.currUser.Options_CurrentState == 2)
+                                {
+                                    <input type="button" class="btn btn_dispo red" />
+                                }
+                                else if (Model.currUser.Options_CurrentState == 3)
+                                {
+                                    <input type="button" class="btn btn_dispo grey" />
+                                }
+                                else
+                                {
+                                    <input type="button" class="btn btn_dispo green" />
+                                }
+                            }
+                            @{ 
+                                    string a = Model.currUser.Username;
+                            }
+                            @Html.ActionLink(a, "ShowOptions", new { id = Model.currUser.Id }, new { @class = "menu_pseudo maxisize gras" })
+                            <button class="invis_btn btn_menu_optn_right"><img class="optn_logo" src="~/Ressources/img/optionsButton.png" /></button>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="body-content">
+        @RenderBody()
+    </div>
+
+    
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/functions")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

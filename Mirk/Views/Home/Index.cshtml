@@ -1,0 +1,39 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="row jumbotron">
+    <h1 class="text_title text-center">Welcome to Mirk ! </h1>
+    <p class="lead text-center">MIRK is a free web application allowing you to chat with your friends !</p>
+    <p>
+        <input type="button" value="Register now &raquo;" class="btn btn-primary btn-lg btn_big" onclick="location.href='@Url.Action("Register", "Home")'"/>
+        <input type="button" value="Login &raquo;" class="btn btn-primary btn-lg navbar-right btn_big" onclick="location.href='@Url.Action("Login", "Home")'"/>
+    </p>
+</div>
+
+<div class="row jumbotron">
+    <div class="col-md-4">
+        <h2>What is Mirk ?</h2>
+        <p>
+            Get more information on our product and all the possibilities it offers
+        </p>
+        <p><a class="btn btn-default" onclick="location.href='@Url.Action("Mirk", "Home")'">Learn more &raquo;</a></p>
+    </div>
+    <div class="col-md-4">
+        <h2>Support Us !</h2>
+        <p>Give us feedback on our product, help us improve it and / or report bugs </p>
+        <p><a class="btn btn-default" onclick="location.href='@Url.Action("Feedback", "Home")'">Learn more &raquo;</a></p>
+    </div>
+    <div class="col-md-4">
+        <h2>Legal Concern</h2>
+        <p>Information on realeases, non-profit application and other legal actions </p>
+        <p><a class="btn btn-default" onclick="location.href='@Url.Action("Mentions", "Home")'">Learn more &raquo;</a></p>
+    </div>
+
+    @*j'aurais link les <a> </a> en dessous si le site était mis en ligne*@ 
+    <div class="row text-center top_spacing">
+        <img src="~/Ressources/img/facebook.png" />
+        <img src="~/Ressources/img/twitter.png" />
+        <img src="~/Ressources/img/soundcloud.png" />
+    </div>
+</div>

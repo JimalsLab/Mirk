@@ -1,0 +1,186 @@
+﻿
+@{
+    ViewBag.Title = "Chat";
+}
+
+
+
+<h2 id="LeurCAM" class="pull-left">Friends Cameras</h2>
+<h2 id="TaCAM">Your Webcam</h2>
+<div class="row">
+    <br />
+        <div class="default_container friends_container col-md-5">
+        <div id="vid-box" style="overflow-y:auto; height:600px; width:700px;" class="col-md-12 default_container friends_container"></div>
+        </div>
+
+        <div id="default_container friends_container pull-right col-md-5">
+            <div id="vid-thumb" class="pull-right default_container friends_container"></div>
+
+            
+
+            
+            
+        </div>
+    </div>
+
+    <div id="inCall" class="pull-right default_container friends_container">
+    <button id="end" class="pull-right boutoninvisible" onclick="end()"><img src="~/Ressources/img/flaticon_stop.png" /></button> <button id="mute" class="pull-right boutoninvisible" onclick="mute()"><img src="~/Ressources/img/flaticon_mute.png" /></button> <button id="pause" class="pull-right boutoninvisible" onclick="pause()"><img src="~/Ressources/img/flaticon_pause.png" /></button>
+</div>
+
+    <form name="loginForm" id="login" action="#" onsubmit="return login(this);">
+        <input type="text" name="username" id="username" placeholder="Pick a username!" />
+        <input type="submit" name="login_submit" value="Log In">
+    </form>
+
+
+    <form name="callForm" id="call" action="#" onsubmit="return makeCall(this);">
+        <input type="text" name="number" placeholder="Enter user to dial!" id="CallNumber"/>
+        <input type="submit" value="Call" id="CallButton" />
+    </form>
+
+    
+
+@section scripts {
+    <script src="/Scripts/jquery.signalR-2.1.2.min.js"></script>
+    <script src="/signalr/hubs"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="https://cdn.pubnub.com/pubnub-3.7.14.min.js"></script>
+    <script src="https://cdn.pubnub.com/webrtc/webrtc.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="https://cdn.pubnub.com/pubnub-3.7.14.min.js"></script>
+    <script src="https://cdn.pubnub.com/webrtc/webrtc.js"></script>
+    <script src="https://cdn.pubnub.com/webrtc/rtc-controller.js"></script>
+
+    <script>
+
+        $( document ).ready(function() {
+            var phone = window.phone = PHONE({
+                number: "@(Model.NbUsersInConf == 1 ? Model.KeyRoom : Model.currUser.Id.ToString())"  || "Anonymous", // listen on username line else Anonymous
+                publish_key: 'pub-c-9f8a66de-03e8-456c-b0c8-4eecb1ac533f',
+                subscribe_key: 'sub-c-9e6c396a-49f1-11e7-b847-0619f8945a4f',
+            });
+
+            var ctrl = window.ctrl = CONTROLLER(phone);
+
+            phone.ready(function () {
+                ctrl.addLocalStream(vid_thumb);
+            });
+            ctrl.receive(function (session) {
+                session.connected(function (session) { video_out.appendChild(session.video); });
+                session.ended(function (session) { ctrl.getVideoElement(session.number).remove(); });
+            });
+
+            ctrl.videoToggled(function (session, isEnabled) {
+                ctrl.getVideoElement(session.number).toggle(isEnabled); // Hide video is stream paused
+            });
+            ctrl.audioToggled(function (session, isEnabled) {
+                ctrl.getVideoElement(session.number).css("opacity", isEnabled ? 1 : 0.5); // 0.5 opacity is audio muted
+            });
+
+            if (@Model.NbUsersInConf > 1) {
+
+                $("#CallNumber").val("@Model.KeyRoom.ToString()");
+                setTimeout(function(){
+                    $('#CallButton').click();
+                }, 2000);
+
+
+            }
+        });
+
+        var video_out = document.getElementById("vid-box");
+        var vid_thumb = document.getElementById("vid-thumb");
+        var constraint = {
+            "audio": true,
+            "video": {
+                "width": {
+                    "min": "600",
+                    "max": "700"
+                },
+                "height": {
+                    "min": "300",
+                    "max": "400"
+                },
+                "frameRate": {
+                    "max": "60"
+                }
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+        function login(form) {
+            var phone = window.phone = PHONE({
+                number: form.username.value || "Anonymous", // listen on username line else Anonymous
+                publish_key: 'pub-c-9f8a66de-03e8-456c-b0c8-4eecb1ac533f',
+                subscribe_key: 'sub-c-9e6c396a-49f1-11e7-b847-0619f8945a4f',
+            });
+
+            var ctrl = window.ctrl = CONTROLLER(phone);
+
+            phone.ready(function () {
+                form.username.style.background = "#55ff5b"; // Turn input green
+                form.login_submit.hidden = "true";	// Hide login button
+                ctrl.addLocalStream(vid_thumb);
+            });
+            ctrl.receive(function (session) {
+                session.connected(function (session) { video_out.appendChild(session.video); });
+                session.ended(function (session) { ctrl.getVideoElement(session.number).remove(); });
+            });
+
+            ctrl.videoToggled(function (session, isEnabled) {
+                ctrl.getVideoElement(session.number).toggle(isEnabled); // Hide video is stream paused
+            });
+            ctrl.audioToggled(function (session, isEnabled) {
+                ctrl.getVideoElement(session.number).css("opacity", isEnabled ? 1 : 0.5); // 0.5 opacity is audio muted
+            });
+
+            return false; 	// So the form does not submit.
+        }
+
+
+        function makeCall(form) {
+            if (!window.phone) alert("Login First!");
+            else phone.dial(form.number.value);
+            return false;
+        }
+
+        function end() {
+
+            $.ajax({
+                type: "POST",
+                url: "/Main/DecrementGroupBackground",
+                dataType: "json",
+                data: {
+                    'Id': "@Model.IdGroup"
+                    }
+            });
+
+            window.history.back();
+            ctrl.hangup();
+        }
+
+        function mute() {
+            var audio = ctrl.toggleAudio();
+            if (!audio) $("#mute").html("Unmute");
+            else $("#mute").html("Mute");
+        }
+
+        function pause() {
+            var video = ctrl.toggleVideo();
+            if (!video) $('#pause').html('Unpause');
+            else $('#pause').html('Pause');
+        }
+
+    </script>
+}
+

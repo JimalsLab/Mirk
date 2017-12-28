@@ -1,0 +1,54 @@
+﻿@model Mirk.ViewModels.LoginViewModel
+
+@{
+    ViewBag.Title = "Login";
+}
+<div class="row semi_transparent_container">
+    <h1><b>&nbsp;Login</b></h1>
+
+
+    @using (Html.BeginForm("VerifyLogin", "Home", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        <div class="form-horizontal">
+            <hr class="in_container_hr"/>
+            <div class="col-md-7">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Username, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Username, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" ,@type ="password"} })
+                        @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Login" class="btn btn-primary" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-5">
+                <p><b>No account to log in ? It's simple:</b></p>
+                <p></p>
+                <input class="btn btn-primary btn_big text-center btn-lg" value="Register now &raquo;" onclick="location.href='@Url.Action("Register", "Home")'" /> 
+            </div>
+        </div>
+    }
+</div>
+<br />
+
+<a href="../Home" class="to_home_button"><img src="~/Ressources/img/to_home_button.png" /></a>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

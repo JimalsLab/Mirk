@@ -1,0 +1,87 @@
+﻿
+@{
+    ViewBag.Title = "Mirk";
+}
+
+<div class="row semi_transparent_container">
+    <h2>What is Mirk ?</h2>
+    <hr class="in_container_hr"/>
+
+    <div class="col-md-7">
+        <h4>
+            <b>Mirk is a free chat application with a whole lot of cool features !</b>
+        </h4>
+        <h4>
+            <br>
+            • Live Chatting <br>
+            <br>
+            • Video and Audio Chatting <br>
+            <br>
+            • Easy Friend Management <br>
+            <br>
+            • Intuitive Group Creation <br>
+            <br>
+            • Way More ! <br>
+            <br>
+        </h4>
+        <br />
+        <br />
+        <br />
+        <h4>
+            <b>
+                We are Continuously Improving it 
+            </b>
+        </h4>
+        <h4>
+            <br />
+            • Agile Solution <br>
+            <br>
+            • Brilliant Developpers <br>
+            <br>
+            • Community Followup <br>
+        </h4>
+        <br />
+        <br />
+        <br />
+        <h4>
+            <b>
+                Quirk's Team in the Mirk project :
+            </b>
+        </h4>
+        <h4>
+            <br />
+            • Mathieu Jacob : project leader <br>
+            <br>
+            • Antoine Durrenbach : chief developper <br>
+            <br>
+            • Vincent Schnellzauer : chief sys & network <br>
+            <br>
+            • Sébastien Cataldi : developper <br>
+            <br>
+            • Ludovic Sittler : network admin <br>
+            <br>
+            • Maxime Forster : network admin <br>
+        </h4>
+    </div>
+    <div class="col-md-5">
+        <div class="img_ctn">
+            <img class="pimg2" src="~/Ressources/img/website_screen_1.PNG" />
+        </div>
+        <div class="img_ctn">
+            <img class="pimg2" src="~/Ressources/img/website_screen_4.PNG" />
+        </div>
+        <div class="img_ctn">
+            <img class="pimg2" src="~/Ressources/img/website_screen_3.PNG" />
+        </div>
+    </div>
+    <div class="row text-center">
+        <input class="btn btn-primary btn_big text-center btn-lg" value="Have a Try &raquo;" onclick="location.href='@Url.Action("Register", "Home")'" /> 
+    </div>
+</div>
+<br />
+
+<a href="../Home" class="to_home_button"><img src="~/Ressources/img/to_home_button.png" /></a>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

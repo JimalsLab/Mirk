@@ -1,0 +1,134 @@
+﻿@model Mirk.ViewModels.MainViewModel
+
+@{
+    ViewBag.Title = "Home";
+}
+
+
+
+@Html.Label(Model.currUser.Id.ToString(), htmlAttributes: new { @class = "hidden", @id = "currUserId" } )
+@Html.Label(Model.currUser.Username.ToString(), htmlAttributes: new { @class = "hidden", @id = "currUserName" })
+@Html.Label(Model.friend.IdFriend.ToString(), htmlAttributes: new { @class = "hidden", @id = "friendId" })
+@Html.Label(Model.group.Id.ToString(), htmlAttributes: new { @class = "hidden", @id = "groupId" })
+
+<div class="fullheight_div">
+    <div class="row fullheight_div">
+        <div class="col-md-2 default_container side_ctn full_col">
+            <ul class="nav nav-tabs nav-justified custom_sidetab">
+                <li class="active friends_btn"><a onclick="toggleFG()"><b>Friends</b></a></li>
+                <li class="groups_btn"><a onclick="toggleFG()" id="grp_toggle"><b>Groups</b></a></li>
+            </ul>
+            <br />
+            <div class="text-default-color allfriends">
+                @foreach (var friend in Model.FriendsList)
+                {
+                    <div>
+                        @if (Model.UsersList.Where(p => p.Id == friend.IdFriend).FirstOrDefault().Options_CurrentState == 1)
+                        {
+                            @Html.ActionLink(friend.Pseudo, "Discussion", new { id = friend.Id }, new { @class = "btn btn-default side_button orangeborder" })
+                        }
+                        else if (Model.UsersList.Where(p => p.Id == friend.IdFriend).First().Options_CurrentState == 2)
+                        {
+                            @Html.ActionLink(friend.Pseudo, "Discussion", new { id = friend.Id }, new { @class = "btn btn-default side_button redborder" })
+                        }
+                        else if (Model.UsersList.Where(p => p.Id == friend.IdFriend).First().Options_CurrentState == 3)
+                        {
+                            @Html.ActionLink(friend.Pseudo, "Discussion", new { id = friend.Id }, new { @class = "btn btn-default side_button" })
+                        }
+                        else
+                        {
+                            @Html.ActionLink(friend.Pseudo, "Discussion", new { id = friend.Id }, new { @class = "btn btn-default side_button greenborder" })
+                        }
+                        <br />
+                    </div>
+                }
+            </div>
+
+            <div class="text-default-color allgroups" hidden="hidden">
+                <h4>Private Rooms</h4>
+                @foreach (var group in Model.privateGroupList)
+                {
+                    <div>
+                        @Html.ActionLink(group.Name, "Group", new { id = group.Id }, new { @class = "btn btn-default side_button greenborder" })
+                        <br />
+                    </div>
+                }
+                <hr />
+                <h4>Public Channels</h4>
+                @foreach (var group in Model.publicGroupList)
+                {
+                    <div>
+                        @Html.ActionLink(group.Name, "Group", new { id = group.Id }, new { @class = "btn btn-default side_button greenborder" })
+                        <br />
+                    </div>
+                }
+            </div>
+        </div>
+
+        @{
+            if (Model.friend.IsFavorite == 403)
+            {
+                <div class="col-md-9 fullheight_div">
+                    @Html.Partial("Group")
+                </div>
+            }
+            else if (Model.friend.IsFavorite != 404)
+            {
+                <div class="col-md-9 fullheight_div">
+                    @Html.Partial("Room")
+                </div>
+            }
+            else
+            {
+                <br />
+                <br />
+                <br />
+                <div class="text-center">
+                    <img class="grayscale error_fliptable" src="~/Ressources/img/fliptable_grey.png" />
+                    <h3><b>No conversation is open yet !</b></h3>
+                    <h4><b>Click on a friend or one of your groups on the left to start one ...</b></h4>
+                </div>
+            }
+        }
+        
+    </div>
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script src="/Scripts/jquery.signalR-2.1.2.min.js"></script>
+    <script src="/signalr/hubs"></script>
+    <script src="~/Ressources/Scripts/chat.js"></script>
+    <script src="~/Ressources/Scripts/dragndrop.js"></script>
+    
+    <script>
+        $(function () {
+            $('#dropZone').filedrop({
+                url: '@Url.Action("UploadFiles")',
+                paramname: 'files',
+                maxFiles: 1,
+                dragOver: function () {
+                    $('#dropZone').css('border-color', 'white');
+                    $('#dropZone').css('color', 'white');
+                    $('#dropZone').html('<b>Drop files here</b>');
+                },
+                dragLeave: function () {
+                    $('#dropZone').css('border-color', 'grey');
+                    $('#dropZone').css('color', 'grey');
+                    $('#dropZone').html('Drop files here');
+                },
+                drop: function () {
+                    $('#dropZone').html('file dropped');
+                },
+                afterAll: function () {
+                    $('#dropZone').html('The file(s) have been uploaded successfully!');
+                },
+                uploadFinished: function (i, file, response, time) {
+                    $('#dropZone').html('<a href="/Ressources/Shared_Files/' + file.name + ' download></a>');
+                }
+            });
+        });
+    </script>
+}

@@ -1,0 +1,128 @@
+﻿@model Mirk.ViewModels.FriendsViewModel
+
+@{
+    ViewBag.Title = "Friends";
+}
+
+<br />
+<div class="row default_container friends_container">
+    <div class="col-md-2">
+        <h2 class="container_text">My Friends</h2>
+    </div>
+    <div class="col-md-2 div_center adjust_down_inp">
+        <input type="text" class="input-sm input-group setfullright" />
+    </div>
+    <div class="col-md-3 div_center">
+        <input type="button" class="btn btn-primary btn-group adjust_spacing_btninp" value="Find &raquo;" />
+        @if (Model.favStatus == 0)
+        {
+            @Html.ActionLink("Favorites ★", "Favorites", new { id = Model.favStatus.ToString() }, new { @class = "btn btn-primary btn-group btn_purple" })
+        }
+        else
+        {
+            @Html.ActionLink("Everyone ", "Everyone", new { id = Model.favStatus }, new { @class = "btn btn-primary btn-group btn_purple" })
+        } 
+    </div>
+    <div class="col-md-1 div_center navbar-right">
+        <input type="button" class="btn btn-primary btn-group navbar-right btn_addfriend" value="+ Add Friends" onclick="location.href='@Url.Action("AddFriends", "Main")'"/>
+    </div> 
+</div>
+@{
+    if (Model.friends != null)
+    {
+ 
+        <div class="col-md-1 fullheight_div"></div>
+        <div class="col-md-5 container default_container container_text_dark">
+            <h3 class="container_text container"><b>Accepted</b></h3>
+            <hr />
+            @foreach (var friend in Model.mutularelations)
+            {
+                if (Model.favStatus == 1 && Model.relations.Where(f => f.IdFriend == friend.Id).FirstOrDefault() == null)
+                {
+
+                }
+                else
+                {
+                    <div class="row container">
+                        <h4 class="text-title-green container"><b>@friend.Username</b></h4>
+                        <div class="col-md-4">
+                            <p><b>First connected</b> @friend.DateCreation </p>
+                        </div>
+                        <div class="col-md-8 text-center">
+                            @if (Model.relations.Where(f => f.IdFriend == friend.Id).FirstOrDefault().IsFavorite == 1)
+                        {
+                                @Html.ActionLink("★", "ToggleFavoriteFriend", new { id = friend.Id }, new { @class = "btn btn-primary btn_purple" })
+                            }
+                            else
+                            {
+                                @Html.ActionLink("★", "ToggleFavoriteFriend", new { id = friend.Id }, new { @class = "btn btn-primary btn_gray" })
+                            }
+                            @Html.ActionLink("View Profile", "ShowOptions", new { id = friend.Id }, new { @class = "btn btn-primary" })
+                            @if (Model.relations.Where(f => f.IdFriend == friend.Id).First().IsBlocked == 1)
+                        {
+                                @Html.ActionLink("Unblock", "ToggleBlockFriend", new { id = friend.Id }, new { @class = "btn btn-primary" })
+                            }
+                            else
+                            {
+                                @Html.ActionLink("Block", "ToggleBlockFriend", new { id = friend.Id }, new { @class = "btn btn-danger" })
+                            }
+                            @Html.ActionLink("Delete", "RemoveUserId", new { id = friend.Id }, new { @class = "btn btn-danger" })
+                        </div>
+                        <br />
+                    </div>
+                }
+            }
+        </div>
+
+        <div class="col-md-5 container default_container container_text_dark">
+            <h3 class="container_text container"><b>Pending</b></h3>
+            <hr />
+            @foreach (var friend in Model.pendingrelations)
+            {
+                if (Model.favStatus == 1 && Model.relations.Where(f => f.IdFriend == friend.Id).FirstOrDefault() == null)
+                {
+
+                }
+                else
+                {
+                    <div class="row container">
+                        <h4 class="text-title-green container"><b>@friend.Username</b></h4>
+                        <div class="col-md-4">
+                            <p><b>First connected</b> @friend.DateCreation </p>
+                        </div>
+                        <div class="col-md-8 text-center">
+                            @if (Model.relations.Where(f => f.IdFriend == friend.Id).First().IsFavorite == 1)
+                        {
+                                @Html.ActionLink("★", "ToggleFavoriteFriend", new { id = friend.Id }, new { @class = "btn btn-primary btn_purple" })
+                            }
+                            else
+                            {
+                                @Html.ActionLink("★", "ToggleFavoriteFriend", new { id = friend.Id }, new { @class = "btn btn-primary btn_gray" })
+                            }
+                            @Html.ActionLink("View Profile", "ShowOptions", new { id = friend.Id }, new { @class = "btn btn-primary" })
+                            @if (Model.relations.Where(f => f.IdFriend == friend.Id).First().IsBlocked == 1)
+                        {
+                                @Html.ActionLink("Unblock", "ToggleBlockFriend", new { id = friend.Id }, new { @class = "btn btn-primary" })
+                            }
+                            else
+                            {
+                                @Html.ActionLink("Block", "ToggleBlockFriend", new { id = friend.Id }, new { @class = "btn btn-danger" })
+                            }
+                            @Html.ActionLink("Delete", "RemoveUserId", new { id = friend.Id }, new { @class = "btn btn-danger" })
+                        </div>
+                        <br />
+                    </div>
+                }
+            }
+        </div>
+    }
+    else
+    {
+    <div class="text-center">
+        <img class="grayscale error_fliptable" src="~/Ressources/img/fliptable_grey.png" />
+        <h3><b>No friends yet !</b></h3>
+        <h4><b>Click the button top right to get some</b></h4>
+    </div>
+    }
+}
+

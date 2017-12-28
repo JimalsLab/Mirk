@@ -1,0 +1,88 @@
+﻿@model Mirk.ViewModels.AddGroupViewModel
+
+@{
+    ViewBag.Title = "AddGroup";
+}
+    
+    @using (Html.BeginForm("AddRoom", "Main", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+        <div class="row ">
+            <br />
+            <div class="fullcenter col-md-5">
+                <div class="form-horizontal default_container container fullwidth">
+                    <h2 class="container_text">Room Info</h2>
+                    <hr />
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.RoomName, htmlAttributes: new { @class = "text-title-green container col-md-3 control-label" })
+                        <div class="col-md-9">
+                            @Html.EditorFor(model => model.RoomName, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.RoomName, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.Label("Room Image", htmlAttributes: new { @class = "text-title-green container col-md-3 control-label" })
+                        <div class="col-md-9">
+                            <div class="input-group">
+                                <label class="input-group-btn">
+                                    <span class="btn btn-default">
+                                        <input type="file" style="display: none;" name="file" id="file" accept=".png, .jpg, .bmp, .jpeg" > Upload
+                                    </span>
+                                </label>
+                                @Html.EditorFor(model => model.PathPicture, new { htmlAttributes = new { @class = "form-control inline-block", @readonly = "true", @id = "nomProp", @style = "width:210px;" } })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.PathPicture, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.Label("Set it public", htmlAttributes: new { @class = "text-title-green container col-md-3 control-label" })
+                        <div class="col-md-9">
+                            <div class="checkbox">
+                                @Html.EditorFor(model => model.IsPublicRoom)
+                                @Html.ValidationMessageFor(model => model.IsPublicRoom, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.EveryoneCanInvite, htmlAttributes: new { @class = "text-title-green container col-md-3 control-label" })
+                        <div class="col-md-9">
+                            <div class="checkbox">
+                                @Html.EditorFor(model => model.EveryoneCanInvite)
+                                @Html.ValidationMessageFor(model => model.EveryoneCanInvite, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.Label("Calls allowed", htmlAttributes: new { @class = "text-title-green container col-md-3 control-label" })
+                        <div class="col-md-9">
+                            <div class="checkbox">
+                                @Html.EditorFor(model => model.CallConversationAllowed)
+                                @Html.ValidationMessageFor(model => model.CallConversationAllowed, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="fullwidth">
+                        <div class="text-center roomcreate fullwidth">
+                            <input type="submit" value="Create" class="btn btn-primary fullwidth" />
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <br />
+        <br />
+  
+    }
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

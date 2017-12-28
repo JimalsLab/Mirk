@@ -1,0 +1,71 @@
+﻿@model Mirk.ViewModels.DetailViewModel
+
+@{
+    ViewBag.Title = "UserDetails";
+}
+
+    <div class="fullcenter col-md-6 default_container ">
+            <div class="text-default-color container">
+
+                <h1 class="text-title-green"><b>&nbsp;&nbsp;@Model.User.Username</b></h1>
+                <hr />
+                <br />
+                <div class="row">
+                    <div class="col-md-9">
+                        <div class="form-group row">
+                            <label class="col-md-4 text-title-green right">First Name</label>
+                            <div class="col-md-8 text-default-color">
+                                @Html.DisplayFor(model => model.User.Firstname, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.User.Firstname, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-4 text-title-green right">Last Name</label>
+                            <div class="col-md-8 text-default-color">
+                                @Html.DisplayFor(model => model.User.Lastname, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.User.Lastname, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-4 text-title-green right">Email</label>
+                            <div class="col-md-8 text-default-color">
+                                @Html.DisplayFor(model => model.User.Email, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.User.Email, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        @if (Model.currUser.Id == Model.User.Id)
+                        {
+                            <div class="form-group row">
+                                <label class="col-md-4 text-title-green right">Phone</label>
+                                <div class="col-md-8 text-default-color">
+                                    @Html.DisplayFor(model => model.User.Phone, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.User.Phone, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-4 text-title-green right">Address</label>
+                                <div class="col-md-8 text-default-color">
+                                    @Html.DisplayFor(model => model.User.Adress, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.User.Adress, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        }
+                        
+                    </div>
+                    <div class="col-md-3 ">
+                        <br />
+                        <img class="pimg" src="@Model.url" />
+                    </div>
+                </div>
+                <br />
+                @if (Model.currUser.Id == Model.User.Id)
+                {
+                    <div class="row">
+                        <div class="text-center">
+                            <input type="button" value="Edit" class="btn btn-primary fullwidth" onclick="location.href='@Url.Action("GoToDetails", "Main")'" />
+                        </div>
+                    </div>
+                }
+            </div>
+    </div>

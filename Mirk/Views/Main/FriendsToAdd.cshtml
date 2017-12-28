@@ -1,0 +1,29 @@
+﻿@model Mirk.ViewModels.FriendsToAddViewModel
+
+@{
+    ViewBag.Title = "FriendsToAdd";
+}
+
+<div class="fullcenter col-md-6">
+    <div class="form-horizontal default_container container fullwidth fullheight_div">
+        <h2 class="container_text">All Friends</h2>
+        <hr />
+        <div class="container">
+            @foreach (var friend in Model.suggestionList)
+            {
+                <div class="container col-md-5 col-md-offset-1 space_bottom">
+                    <h4 class="text-title-green container"><b>@friend.Username</b></h4>
+                    <p class="text-default-color">@friend.Email</p>
+                    @Html.ActionLink("Add Friend", "AddIdToGroup", new { id = friend.Id , group = Model.groupNb }, new { @class = "btn btn-primary" })
+                    @Html.ActionLink("View Profile", "ShowOptions", new { id = friend.Id }, new { @class = "btn btn-primary" })
+                </div>
+
+            }
+        </div>
+        <br />
+        @Html.ActionLink("Done", "Group", new { id = Model.groupNb }, new { @class = "btn btn-primary fullwidth" })
+
+            </div>
+    </div>
+
+

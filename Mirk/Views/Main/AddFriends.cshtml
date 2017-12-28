@@ -1,0 +1,103 @@
+﻿@model Mirk.ViewModels.AddFriendsViewModel
+
+@{
+    ViewBag.Title = "AddFriends";
+}
+
+<div class="row fullheight_div">
+    <div class="col-md-1"></div>
+    <div class="col-md-5 default_container text-default-color">
+        <h3><b>Friend Suggestion</b></h3>
+        <hr />
+        @{ 
+            ViewBag.i = 0;
+            foreach (var friend in Model.suggestionList)
+            {
+                ViewBag.i += 1;
+                if (ViewBag.i == 7)
+                {
+                    break;
+                }
+                if (friend.Options_CurrentState == 1)
+                {
+                    ViewBag.night = " Away";
+                }
+                else if (friend.Options_CurrentState == 2)
+                {
+                    ViewBag.night = " Occupied";
+                }
+                else if (friend.Options_CurrentState == 3)
+                {
+                    ViewBag.night = " Offline";
+                }
+                else
+                {
+                    ViewBag.night = " Available";
+                }
+                <div class="row container">
+                    <h4 class="text-title-green container"><b>@friend.Username</b></h4>
+                    <div class="col-md-4">
+                        <p><b>First Connection :</b> @friend.DateCreation </p>
+                    </div>
+                    <div class="col-md-3">
+                        <p><b>Status :</b> @ViewBag.night</p>
+                    </div>
+                    <div class="col-md-5 text-center">
+                        @Html.ActionLink("Add Friend", "AddUserId", new { id = friend.Id }, new { @class = "btn btn-primary" } )
+                        @Html.ActionLink("View Profile","ShowOptions", new { id = friend.Id }, new { @class = "btn btn-primary" })
+                    </div>
+                    <br />
+                </div>
+
+            }
+        }
+    </div>
+    <div class="col-md-5 default_container text-default-color">
+        <h3><b>Received Requests</b></h3>
+        <hr />
+        @{
+            ViewBag.i = 0;
+            foreach (var friend in Model.pendingList)
+            {
+                ViewBag.i += 1;
+                if (ViewBag.i == 7)
+                {
+                    break;
+                }
+                if (friend.Options_CurrentState == 1)
+                {
+                    ViewBag.night = " Away";
+                }
+                else if (friend.Options_CurrentState == 2)
+                {
+                    ViewBag.night = " Occupied";
+                }
+                else if (friend.Options_CurrentState == 3)
+                {
+                    ViewBag.night = " Offline";
+                }
+                else
+                {
+                    ViewBag.night = " Available";
+                }
+                <div class="row container">
+                    <h4 class="text-title-green container"><b>@friend.Username</b></h4>
+                    <div class="col-md-4">
+                        <p><b>First Connection :</b> @friend.DateCreation </p>
+                    </div>
+                    <div class="col-md-3">
+                        <p><b>Status: </b> @ViewBag.night</p>
+                    </div>
+                    <div class="col-md-5 text-center">
+                        @Html.ActionLink("Add Friend", "AddUserId", new { id = friend.Id }, new { @class = "btn btn-primary" })
+                        @Html.ActionLink("View Profile", "ShowOptions", new { id = friend.Id }, new { @class = "btn btn-primary" })
+                    </div>
+                    <br />
+                </div>
+
+            }
+        }
+    </div>
+</div>
+
+

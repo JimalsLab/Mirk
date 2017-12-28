@@ -1,0 +1,22 @@
+﻿@model Mirk.ViewModels.MainViewModel
+
+
+
+<div class="box">
+    <div class="main_header">
+        <h1 class="text-title-green" id="grp"><b>@Model.group.Name</b>&nbsp;&nbsp;&nbsp;<a href="../LeaveGroup/@Model.group.Id"><img src="~/Ressources/img/leave.png" /></a></h1>
+    </div>
+    <div class="main_container default_container full_col">
+        @Html.ActionLink("Add Friends", "AddFriendToGroup", new { id = Model.group.Id }, new { @class = "btn invis_2" })
+        <input type="button" value="View Group Info" class="btn invis_2" />
+        @Html.ActionLink("Start Video Call", "Chat", new { id = (Model.friend.IsFavorite != 404 ? Model.friend.IdFriend : -1), IdGroup = Model.group.Id }, new { @class = "btn btn-primary btn_purple call_button" })
+    </div>
+    <div class="main_dialog default_container full_col " id="Conversation">
+        <div id="dropZone">Drop files here</div>
+    </div>
+    <div class="rowbox main_input">
+        @Html.TextArea("text", null, new { @class = "form-control msg_input row_text main_container", @id = "mainimputbox" })
+        <input type="button" class="btn btn-primary row_button" value="Send" id="sendMessage"/>
+    </div>
+
+</div>
